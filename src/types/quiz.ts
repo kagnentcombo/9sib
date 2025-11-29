@@ -14,7 +14,6 @@ export type Question = {
   imageAlt?: string;
   choices: Choice[];
   correctKey: ChoiceKey;
-  // ⬅️ สำคัญ: รองรับทั้ง string และ string[]
   explanation?: string | string[];
-  topics?: string[];
+  topics?: string[] | import("@/data/types").Topic[];
 };
