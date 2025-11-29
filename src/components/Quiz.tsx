@@ -39,11 +39,12 @@ export default function Quiz({
   }, [questions, answers]);
 
   useEffect(() => {
+    if (submitted) return; // หยุดนาฬิกาเมื่อส่งคำตอบแล้ว
     const timer = setInterval(() => {
       setTimeUsedMs(Date.now() - startTime);
     }, 100);
     return () => clearInterval(timer);
-  }, [startTime]);
+  }, [startTime, submitted]);
 
   const choose = (qId: string, key: string) => {
     setAnswers((prev) => ({ ...prev, [qId]: key }));
@@ -56,6 +57,10 @@ export default function Quiz({
 
   const doSubmit = async () => {
     setIsSubmitting(true);
+    
+    // บันทึกเวลาสุดท้ายก่อนหยุดนาฬิกา
+    const finalTime = Date.now() - startTime;
+    setTimeUsedMs(finalTime);
     
     // Small delay for better UX
     await new Promise(resolve => setTimeout(resolve, 300));
@@ -286,27 +291,68 @@ export default function Quiz({
                       : "border-red-300 bg-red-50"
                   }`}
                 >
-                  <div className="mb-3 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
+                  <div className="mb-3">
+                    {/* Header - แสดงเฉพาะเลขข้อกับไอคอน */}
+                    <div className="flex items-center justify-between mb-3">
                       <span
-                        className={`inline-flex h-8 w-8 items-center justify-center rounded-full font-bold text-white ${
-                          isCorrect ? "bg-green-500" : "bg-red-500"
+                        className={`inline-flex h-10 w-10 items-center justify-center rounded-full text-xl ${
+                          isCorrect 
+                            ? "bg-green-500 text-white" 
+                            : "bg-red-500 text-white"
                         }`}
                       >
-                        {i + 1}
+                        {isCorrect ? "✓" : "✗"}
                       </span>
-                      <span className="font-semibold">
-                        {isCorrect ? "✓ ถูก" : "✗ ผิด"}
-                      </span>
+                      <span className="text-sm text-gray-500">ข้อที่ {i + 1}</span>
                     </div>
-                    <div className="flex gap-2 text-sm">
-                      <span>
-                        คุณ: <strong>{picked}</strong>
-                      </span>
-                      <span>
-                        ถูก: <strong className="text-green-600">{correct}</strong>
-                      </span>
-                    </div>
+                    
+                    {/* แสดงโจทย์ */}
+                    {q.text && (
+                      <div className="mb-3 p-3 bg-white rounded border border-gray-200">
+                        <p className="text-sm text-gray-700">{q.text}</p>
+                      </div>
+                    )}
+                    {q.image && (
+                      <div className="mb-3 overflow-hidden rounded border border-gray-200">
+                        <Image
+                          src={q.image}
+                          alt="โจทย์"
+                          width={400}
+                          height={200}
+                          className="w-full h-auto max-h-40 object-contain"
+                        />
+                      </div>
+                    )}
+                    
+                    {/* แสดงช้อยที่เลือก */}
+                    {picked && q.choices && (
+                      <div className={`mb-2 p-3 rounded-lg border-2 ${
+                        isCorrect 
+                          ? "bg-green-50 border-green-300" 
+                          : "bg-red-50 border-red-300"
+                      }`}>
+                        <div className="text-xs font-medium text-gray-600 mb-1">
+                          {isCorrect ? "✓ คำตอบของคุณ (ถูกต้อง)" : "✗ คำตอบของคุณ"}
+                        </div>
+                        <div className={`text-sm font-medium ${
+                          isCorrect ? "text-green-800" : "text-red-800"
+                        }`}>
+                          {picked}. {q.choices[picked as keyof typeof q.choices]}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* แสดงช้อยที่ถูก (เฉพาะตอบผิด) */}
+                    {!isCorrect && q.choices && (
+                      <div className="mb-2 p-3 rounded-lg border-2 bg-green-50 border-green-300">
+                        <div className="text-xs font-medium text-green-700 mb-1">
+                          ✓ คำตอบที่ถูกต้อง
+                        </div>
+                        <div className="text-sm font-medium text-green-800">
+                          {correct}. {q.choices[correct as keyof typeof q.choices]}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {((isPremium || MOCK_UNLOCK_ALL) && (q as any).explanation) && (
