@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/* User model สำหรับเก็บข้อมูล authentication และ subscription */
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  name              String?
+  image             String?
+  isPremium         Boolean   @default(false)
+  premiumExpiresAt  DateTime?
+  omiseCustomerId   String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  payments          Payment[]
+}
+
+/* Payment model สำหรับเก็บประวัติการชำระเงิน */
+model Payment {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  omiseChargeId   String   @unique
+  amount          Int
+  currency        String   @default("thb")
+  status          String
+  description     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+/* ตัวอย่างโมเดลเล็ก ๆ */
+model ExamSet {
+  id         String   @id @default(cuid())
+  title      String
+  createdAt  DateTime @default(now())
+}
