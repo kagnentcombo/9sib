@@ -15,5 +15,5 @@ export type Question = {
   choices: Choice[];
   correctKey: ChoiceKey;
   explanation?: string | string[];
-  topics?: string[] | import("@/data/types").Topic[];
+  topics?: string[];
 };

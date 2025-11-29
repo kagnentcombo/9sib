@@ -23,7 +23,7 @@ export type RawQuestion = {
   text?: string;
   image?: string;
   imageAlt?: string;
-  topics?: Topic[]; // ⬅️ เพิ่มหัวข้อ
+  topics?: string[];
   choices: RawChoice[];
   correctKey: RawChoiceKey;
   explanation?: string | string[];
@@ -43,13 +43,13 @@ export type SetEntry = { meta: { title: string; year: number }; questions: RawQu
 export type UserAnswer = { questionId: string; selectedKey: RawChoiceKey | null };
 
 export type TopicStat = {
-  topic: Topic;
+  topic: string; // เปลี่ยนเป็น string แทน Topic
   total: number;
   correct: number;
   wrong: number;
   accuracy: number;    // 0..100
   level: MasteryLevel;
-  errorShare: number;  // % ของ “ข้อผิดทั้งหมด” ที่มาจากหัวข้อนี้
+  errorShare: number;  // % ของ "ข้อผิดทั้งหมด" ที่มาจากหัวข้อนี้
   focusPercent: number;
 };
 
