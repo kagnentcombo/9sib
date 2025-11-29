@@ -4,10 +4,13 @@ import { toUIQuestions } from '@/data/adapters';
 import { generalAllRaw } from '@/data/subjects/general/all';
 import { mathAllRaw } from '@/data/subjects/math/all';
 
-interface Props { params: { topic: string } }
+interface Props { 
+  params: Promise<{ topic: string }>;
+}
 
-export default function TopicPracticePage({ params }: Props) {
-  const topic = decodeURIComponent(params.topic);
+export default async function TopicPracticePage({ params }: Props) {
+  const { topic: topicParam } = await params;
+  const topic = decodeURIComponent(topicParam);
   const raw = [...generalAllRaw, ...mathAllRaw];
   const ui = toUIQuestions(raw, `topic-${topic}`);
   const filtered = ui.filter((q: any) => (q.topics ?? []).includes(topic));
