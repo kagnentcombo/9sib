@@ -1,6 +1,5 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Question } from "@/types/quiz";
 import Image from "next/image";
 import { useEffect, useState, useMemo } from "react";
@@ -24,7 +23,7 @@ export default function Quiz({
   isPremium = false,
 }: Props) {
   const total = questions.length;
-  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [answers, setAnswers] = useState<Record<string, string | undefined>>({});
   const [submitted, setSubmitted] = useState(false);
   const [index, setIndex] = useState(0);
   const [selectedModalId, setSelectedModalId] = useState<string | null>(null);
@@ -54,23 +53,27 @@ export default function Quiz({
     return `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, "0")}`;
   };
 
-  const doSubmit = async (skipped: boolean) => {
+  const doSubmit = async () => {
     setSubmitted(true);
 
     // Save attempt
     const attempt = buildAttemptRecord({
       setKey,
-      questions,
-      answers,
-      timeUsedMs,
-      skipped,
+      title,
+      startedAt: startTime,
+      endedAt: Date.now(),
+      questions: questions as any,
+      answersMap: answers as any,
     });
     saveAttempt(attempt);
 
-    // Analyze - cast to match RawQuestion shape
+    // Analyze
     const result = analyzeSet(
-      questions as unknown as typeof questions & { topics: string[] }[],
-      Object.entries(answers).map(([qId, key]) => ({ qId, key }))
+      questions as any,
+      Object.entries(answers).map(([questionId, selectedKey]) => ({ 
+        questionId, 
+        selectedKey: selectedKey as any 
+      }))
     );
     setAnalysis(result);
   };

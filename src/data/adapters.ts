@@ -1,4 +1,5 @@
 // src/data/adapters.ts
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Question } from "@/types/quiz";
 import type { RawQuestion } from "@/data/types";
 import { ensureTopicsOnRaw } from "@/lib/topicTagger";

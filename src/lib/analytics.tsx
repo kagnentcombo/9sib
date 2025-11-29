@@ -14,9 +14,9 @@ const r1 = (n: number) => Math.round(n * 10) / 10;
 export function analyzeSet(questions: RawQuestion[], answers: UserAnswer[]): AnalysisResult {
   const byId = new Map(questions.map(q => [q.id, q]));
 
-  const topicCounter = new Map<Topic, { total: number; correct: number; wrong: number }>();
+  const topicCounter = new Map<string, { total: number; correct: number; wrong: number }>();
   for (const q of questions) {
-    const topics = q.topics?.length ? q.topics : (["อื่น ๆ"] as Topic[]);
+    const topics = q.topics?.length ? q.topics : ["อื่น ๆ"];
     for (const t of topics) {
       const b = topicCounter.get(t) ?? { total: 0, correct: 0, wrong: 0 };
       b.total += 1;
@@ -36,7 +36,7 @@ export function analyzeSet(questions: RawQuestion[], answers: UserAnswer[]): Ana
     const ok = a.selectedKey === q.correctKey;
     if (ok) correct++; else wrongIds.push(q.id);
 
-    const topics = q.topics?.length ? q.topics : (["อื่น ๆ"] as Topic[]);
+    const topics = q.topics?.length ? q.topics : ["อื่น ๆ"];
     for (const t of topics) {
       const b = topicCounter.get(t)!;
       if (ok) b.correct++; else b.wrong++;

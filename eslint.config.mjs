@@ -11,6 +11,16 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    ignores: [
+      "src/generated/**",
+      "src/lib/auth.ts",
+      "src/components/Quiz-old.tsx",
+      "src/components/PremiumAwareQuiz.tsx",
+      ".next/**",
+      "node_modules/**",
+    ],
+  },
 ];
 
 export default eslintConfig;

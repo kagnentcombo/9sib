@@ -92,7 +92,7 @@ export default function PremiumPage() {
         });
       }
 
-      const OmiseCard = (window as any).OmiseCard;
+      const OmiseCard = (window as unknown as { OmiseCard: any }).OmiseCard;
       OmiseCard.configure({
         publicKey: process.env.NEXT_PUBLIC_OMISE_PUBLIC_KEY!,
         amount: selectedPlan.price * 100,
