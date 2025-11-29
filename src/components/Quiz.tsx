@@ -202,7 +202,7 @@ export default function Quiz({
 
               <button
                 className="ml-auto rounded-lg bg-blue-600 px-6 py-2 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
-                onClick={() => doSubmit(false)}
+                onClick={() => doSubmit()}
                 disabled={answeredCount === 0}
               >
                 ✓ ส่งคำตอบ
