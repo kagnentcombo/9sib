@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import PremiumExpiryBanner from "@/components/PremiumExpiryBanner";
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
@@ -37,6 +38,14 @@ export default async function ProfilePage() {
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <h1 className="text-3xl font-bold text-gray-900">โปรไฟล์</h1>
+
+        {/* Expiry Warning Banner */}
+        {isPremiumActive && user.premiumExpiresAt && (
+          <PremiumExpiryBanner 
+            expiresAt={user.premiumExpiresAt} 
+            daysRemaining={daysRemaining} 
+          />
+        )}
 
         {/* User Info Card */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6">

@@ -30,6 +30,7 @@ export default function Quiz({
   const [timeUsedMs, setTimeUsedMs] = useState(0);
   const [startTime] = useState(Date.now());
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const current = questions[index];
   const answeredCount = Object.keys(answers).length;
@@ -54,6 +55,11 @@ export default function Quiz({
   };
 
   const doSubmit = async () => {
+    setIsSubmitting(true);
+    
+    // Small delay for better UX
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
     setSubmitted(true);
 
     // Save attempt
@@ -76,6 +82,7 @@ export default function Quiz({
       }))
     );
     setAnalysis(result);
+    setIsSubmitting(false);
   };
 
   const reset = () => {
@@ -85,6 +92,7 @@ export default function Quiz({
     setTimeUsedMs(0);
     setSelectedModalId(null);
     setAnalysis(null);
+    setIsSubmitting(false);
   };
 
   const practiceWrongNow = () => {
@@ -201,11 +209,18 @@ export default function Quiz({
               </button>
 
               <button
-                className="ml-auto rounded-lg bg-blue-600 px-6 py-2 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+                className="ml-auto rounded-lg bg-blue-600 px-6 py-2 font-semibold text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 onClick={() => doSubmit()}
-                disabled={answeredCount === 0}
+                disabled={answeredCount === 0 || isSubmitting}
               >
-                ✓ ส่งคำตอบ
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>กำลังส่ง...</span>
+                  </>
+                ) : (
+                  <>✓ ส่งคำตอบ</>
+                )}
               </button>
             </div>
 
@@ -304,8 +319,16 @@ export default function Quiz({
                   )}
 
                   {!isCorrect && !(isPremium || MOCK_UNLOCK_ALL) && (
-                    <div className="text-xs text-gray-600">
-                      🔒 อัปเกรดเป็น Premium เพื่อดูเฉลย
+                    <div className="mt-2 text-center">
+                      <div className="text-xs text-gray-600 mb-2">
+                        🔒 เฉลยละเอียดสำหรับสมาชิก Premium
+                      </div>
+                      <a
+                        href="/premium"
+                        className="inline-block px-3 py-1 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700 transition"
+                      >
+                        อัพเกรดเลย
+                      </a>
                     </div>
                   )}
                 </div>

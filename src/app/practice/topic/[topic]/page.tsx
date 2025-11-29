@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Quiz from '@/components/Quiz';
 import { notFound } from 'next/navigation';
 import { toUIQuestions } from '@/data/adapters';
