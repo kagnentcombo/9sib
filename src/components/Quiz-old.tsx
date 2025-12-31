@@ -16,7 +16,7 @@ import { MOCK_UNLOCK_ALL } from "@/lib/config";
  * - ไม่กระทบ type กลางของโปรเจ็กต์
  */
 type ChoiceWithImg = Question["choices"][number] & {
-  img?: string;
+  image?: string;
   imgAlt?: string;
 };
 

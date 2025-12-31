@@ -1,16 +1,15 @@
-"use client";
 
+import Link from "next/link";
 import { AnalysisResult } from "@/data/types";
 
 type Props = {
   title: string;
-  setKey: string;
   result: AnalysisResult;
   onPracticeWrong?: () => void;
   onReviewTopics?: (topic: string) => void;
 };
 
-export default function ResultPanel({ title, setKey, result, onPracticeWrong, onReviewTopics }: Props) {
+export default function ResultPanel({ title, result, onPracticeWrong, onReviewTopics }: Props) {
   const s = result.summary;
   const topToStudy = result.byTopic.slice(0, 3);
 
@@ -108,9 +107,9 @@ export default function ResultPanel({ title, setKey, result, onPracticeWrong, on
                 onClick={() => onPracticeWrong?.()}>
           ทวน “ข้อที่ผิด” ของรอบนี้
         </button>
-        <a href="/history" className="rounded-lg border px-4 py-2 hover:bg-gray-50">
+        <Link href="/history" className="rounded-lg border px-4 py-2 hover:bg-gray-50">
           ดูประวัติ/พัฒนาการ
-        </a>
+        </Link>
       </div>
     </section>
   );

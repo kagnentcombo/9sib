@@ -3,11 +3,9 @@
 import { Question } from "@/types/quiz";
 import Image from "next/image";
 import { useEffect, useState, useMemo } from "react";
-import ResultPanel from "./ResultPanel";
 import { buildAttemptRecord, saveAttempt } from "@/lib/history";
 import { analyzeSet } from "@/lib/analytics";
 import { MOCK_UNLOCK_ALL } from "@/lib/config";
-import type { AnalysisResult } from "@/data/types";
 
 interface Props {
   questions: Question[];
@@ -28,10 +26,8 @@ export default function Quiz({
   );
   const [submitted, setSubmitted] = useState(false);
   const [index, setIndex] = useState(0);
-  const [selectedModalId, setSelectedModalId] = useState<string | null>(null);
   const [timeUsedMs, setTimeUsedMs] = useState(0);
   const [startTime] = useState(Date.now());
-  const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const current = questions[index];
@@ -89,20 +85,7 @@ export default function Quiz({
     setIsSubmitting(false);
   };
 
-  const reset = () => {
-    setAnswers({});
-    setSubmitted(false);
-    setIndex(0);
-    setTimeUsedMs(0);
-    setSelectedModalId(null);
-    setAnalysis(null);
-    setIsSubmitting(false);
-  };
 
-  const practiceWrongNow = () => {};
-  const reviewTopic = (topic: string) => {
-    window.location.href = `/practice/topic/${encodeURIComponent(topic)}`;
-  };
 
   // ปุ่ม palette เลขข้อ
   const renderPaletteButton = (q: Question, i: number) => {

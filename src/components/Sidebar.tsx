@@ -4,12 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
 
-type Props = {
-  selectedSlug?: string;
-  onSelect?: (slug: string) => void;
-};
+type Props = object;
 
-export default function Sidebar({ selectedSlug, onSelect }: Props) {
+export default function Sidebar({}: Props) {
   const { data: session, status } = useSession();
   const user = session?.user;
 
