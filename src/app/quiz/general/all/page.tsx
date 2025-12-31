@@ -8,7 +8,7 @@ export default function GeneralAllPage() {
   if (!ui.length) return notFound();
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-6">
+    <div className="w-full h-screen flex flex-col">
       <PremiumAwareQuiz
         title={`วิชาความสามารถทั่วไป • รวมทุกข้อ (${ui.length} ข้อ)`}
         questions={ui}

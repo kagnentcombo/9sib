@@ -7,7 +7,7 @@ export default function Page() {
   const router = useRouter();
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8">
+    <main className="mx-auto max-w-6xl px-4 py-8 pt-24">
       <h1 className="mb-4 text-2xl font-semibold">เลือกวิชา</h1>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

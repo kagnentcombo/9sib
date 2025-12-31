@@ -68,7 +68,7 @@ export type AnalysisResult = {
   wrongQuestionIds: string[];
 };
 
-// ใช้กับ “บันทึกประวัติการทำ”
+// ใช้กับ "บันทึกประวัติการทำ"
 export type AttemptRecord = {
   id: string;               // uuid
   setKey: string;           // เช่น "general-all"
@@ -77,5 +77,6 @@ export type AttemptRecord = {
   createdAt: number;
   durationMs: number;
   answers: Record<string, RawChoiceKey | undefined>;
+  questions: RawQuestion[]; // เก็บคำถามทั้งหมดไว้ด้วย
   result: AnalysisResult;
 };

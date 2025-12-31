@@ -8,7 +8,7 @@ export default function MathAllPage() {
   if (!ui.length) return notFound();
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-6">
+    <div className="w-full h-screen flex flex-col">
       <Quiz
         title={`วิชาคณิตศาสตร์ • รวมทุกข้อ (${ui.length} ข้อ)`}
         questions={ui}

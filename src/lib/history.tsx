@@ -36,15 +36,22 @@ export function buildAttemptRecord(params: {
     createdAt: params.endedAt,
     durationMs: Math.max(0, params.endedAt - params.startedAt),
     answers: params.answersMap,
+    questions: params.questions, // เพิ่มคำถามเข้าไป
     result,
   };
   return attempt;
 }
 
-// รวม “ข้อผิดล่าสุดของชุด setKey” มาเป็นเด็คทวน
+// รวม "ข้อผิดล่าสุดของชุด setKey" มาเป็นเด็คทวน
 export function getLatestWrongDeck(setKey: string, questions: RawQuestion[]): RawQuestion[] {
   const latest = getAllAttempts().find(a => a.setKey === setKey);
   if (!latest || latest.result.wrongQuestionIds.length === 0) return [];
   const ids = new Set(latest.result.wrongQuestionIds);
   return questions.filter(q => ids.has(q.id));
+}
+
+// ดึงข้อมูลการทำข้อสอบตาม ID
+export function getAttemptById(attemptId: string): AttemptRecord | null {
+  const attempts = getAllAttempts();
+  return attempts.find(a => a.id === attemptId) || null;
 }

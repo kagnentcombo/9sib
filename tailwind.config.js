@@ -4,6 +4,12 @@ module.exports = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  theme: { extend: {} },
+  theme: {
+    extend: {
+      fontFamily: {
+        'sans': ['var(--font-sarabun)', 'system-ui', 'sans-serif'],
+      }
+    }
+  },
   plugins: [],
 }
